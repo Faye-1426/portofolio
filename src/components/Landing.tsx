@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -21,37 +21,58 @@ type Shape = {
   fromLeft: number;
 };
 
+const generateShapes = (count: number): Shape[] => {
+  return Array.from({ length: count }, (_, i) => {
+    const size = 150;
+    const top = Math.random() * 90;
+    const left = Math.random() * 90;
+    const fromTop = top + (Math.random() * 40 - 20);
+    const fromLeft = left + (Math.random() * 40 - 20);
+    const isCircle = Math.random() > 0.5;
+    const color = Math.random() > 0.5 ? "bg-violet-900" : "bg-rose-900";
+
+    return {
+      id: i,
+      size,
+      top,
+      left,
+      fromTop,
+      fromLeft,
+      isCircle,
+      color,
+    };
+  });
+};
+
 export default function Landing() {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"in" | "out">("in");
-  const [shapes, setShapes] = useState<Array<Shape>>([]);
+  const [shapes, setShapes] = useState<Shape[]>([]);
 
   const currentText = rotatingTexts[index];
-  const letters = currentText.split("");
+  const letters = useMemo(() => currentText.split(""), [currentText]);
 
+  // Rotate text animation logic
   useEffect(() => {
-    if (phase === "in") {
-      // Tunggu sampai semua huruf muncul, lalu mulai animasi out
-      const delay = 4000 + letters.length * 50;
-      const timer = setTimeout(() => {
-        setPhase("out");
-      }, delay);
-      return () => clearTimeout(timer);
-    } else {
-      // Setelah semua huruf keluar, ganti ke kalimat berikutnya
-      const delay = letters.length * 50 + 1000;
-      const timer = setTimeout(() => {
+    const delay =
+      phase === "in" ? 4000 + letters.length * 50 : letters.length * 50 + 1000;
+    const timer = setTimeout(() => {
+      if (phase === "in") setPhase("out");
+      else {
         setIndex((prev) => (prev + 1) % rotatingTexts.length);
         setPhase("in");
-      }, delay);
-      return () => clearTimeout(timer);
-    }
-  }, [phase, index]);
+      }
+    }, delay);
 
+    return () => clearTimeout(timer);
+  }, [phase, index, letters.length]);
+
+  // Initial shape generation
   useEffect(() => {
     setShapes(generateShapes(5));
   }, []);
 
+  // Animate shapes every 7s
   useEffect(() => {
     const interval = setInterval(() => {
       setShapes((prevShapes) =>
@@ -65,47 +86,40 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, []);
 
-  const generateShapes = (count: number) => {
-    const shapes = [];
-    for (let i = 0; i < count; i++) {
-      const size = 150;
-      const top = Math.random() * 90;
-      const left = Math.random() * 90;
-      const isCircle = Math.random() > 0.5;
-      const color = Math.random() > 0.5 ? "bg-violet-900" : "bg-rose-900";
-      const fromTop = top + (Math.random() * 40 - 20);
-      const fromLeft = left + (Math.random() * 40 - 20);
-      shapes.push({
-        id: i,
-        size,
-        top,
-        left,
-        fromTop,
-        fromLeft,
-        isCircle,
-        color,
-      });
-    }
-    return shapes;
-  };
+  const renderLetters = useCallback(() => {
+    return letters.map((char, i) => {
+      const delay = phase === "in" ? i * 0.05 : (letters.length - 1 - i) * 0.05;
+      return (
+        <motion.span
+          key={`${index}-${i}-${phase}`}
+          initial={{
+            rotateY: phase === "in" ? 90 : 0,
+            opacity: phase === "in" ? 0 : 1,
+          }}
+          animate={{
+            rotateY: phase === "in" ? 0 : 90,
+            opacity: phase === "in" ? 1 : 0,
+          }}
+          transition={{ duration: 0.4, delay }}
+          className="inline-block"
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      );
+    });
+  }, [letters, phase, index]);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black text-white">
-      {/* Background */}
+      {/* Gradient Overlay */}
       <div className="absolute inset-0 backdrop-blur-xs bg-opacity-50 bg-gradient-to-br from-purple-800 via-black to-blue-800 z-0" />
 
-      {/* Moving Shapes */}
+      {/* Floating Background Shapes */}
       {shapes.map((shape) => (
         <motion.div
           key={shape.id}
-          initial={{
-            top: `${shape.fromTop}%`,
-            left: `${shape.fromLeft}%`,
-          }}
-          animate={{
-            top: `${shape.top}%`,
-            left: `${shape.left}%`,
-          }}
+          initial={{ top: `${shape.fromTop}%`, left: `${shape.fromLeft}%` }}
+          animate={{ top: `${shape.top}%`, left: `${shape.left}%` }}
           transition={{ duration: 5, ease: "easeInOut" }}
           style={{
             width: `${shape.size}px`,
@@ -120,34 +134,10 @@ export default function Landing() {
         />
       ))}
 
-      {/* Text Flip In/Out */}
+      {/* Rotating Text */}
       <div className="z-10 flex justify-center items-center h-full text-2xl sm:text-3xl md:text-4xl text-center px-4 font-bold relative">
         <span className="absolute flex gap-[2px] flex-wrap justify-center">
-          {letters.map((char, i) => {
-            const delay =
-              phase === "in" ? i * 0.05 : (letters.length - 1 - i) * 0.05; // reverse delay only
-            const indexKey = i;
-            return (
-              <motion.span
-                key={`${index}-${indexKey}-${phase}`}
-                initial={{
-                  rotateY: phase === "in" ? 90 : 0,
-                  opacity: phase === "in" ? 0 : 1,
-                }}
-                animate={{
-                  rotateY: phase === "in" ? 0 : 90,
-                  opacity: phase === "in" ? 1 : 0,
-                }}
-                transition={{
-                  duration: 0.4,
-                  delay,
-                }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            );
-          })}
+          {renderLetters()}
         </span>
 
         {/* Scroll Indicator */}
