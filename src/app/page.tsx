@@ -2,7 +2,6 @@
 
 import About from "@/components/About";
 import Landing from "@/components/Landing";
-import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import TechStackSection from "@/components/TechStack";

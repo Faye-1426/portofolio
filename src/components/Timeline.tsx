@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils"; // Pastikan kamu punya fungsi cn untuk class merge
+import { cn } from "@/lib/utils";
 
 const timelineItems = [
   {
@@ -37,8 +37,8 @@ export default function Timeline() {
       <div className="max-w-5xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-16">My Timeline</h2>
         <div className="relative">
-          {/* Vertical Line (hidden on mobile) */}
-          <div className="hidden md:block absolute left-1/2 top-0 w-1 h-full bg-white/20 transform -translate-x-1/2" />
+          {/* Vertical line always visible */}
+          <div className="block absolute left-1/2 top-0 w-1 h-full bg-white/20 transform -translate-x-1/2" />
           <div className="space-y-16">
             {timelineItems.map((item, i) => {
               const isLeft = i % 2 === 0;
@@ -60,7 +60,7 @@ export default function Timeline() {
                     <p className="text-sm text-white/80 mb-2">{item.year}</p>
                     <p className="text-sm text-white/90">{item.description}</p>
 
-                    {/* Bullet Point */}
+                    {/* Bullet point only on desktop */}
                     <span
                       className={cn(
                         "absolute w-4 h-4 bg-purple-500 rounded-full top-6",
@@ -69,8 +69,9 @@ export default function Timeline() {
                           : "hidden md:block -right-8"
                       )}
                     />
-                    {/* Center Bullet for Mobile */}
-                    <span className="md:hidden absolute w-4 h-4 bg-purple-500 rounded-full top-6 left-1/2 -translate-x-1/2" />
+
+                    {/* Hidden on all screen (no bullet in center for mobile) */}
+                    <span className="hidden" />
                   </div>
                 </motion.div>
               );
