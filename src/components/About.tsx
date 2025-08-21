@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const containerVariant = {
   hidden: {},
@@ -36,10 +38,12 @@ export default function About() {
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-10 flex flex-col md:flex-row items-center gap-12 shadow-xl">
+        <Card className="bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-10 md:gap-12">
           {/* LEFT: Info */}
           <motion.div className="flex-1 space-y-6" variants={fadeInLeft}>
-            <h2 className="text-3xl md:text-4xl font-bold">About Me</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              About Me
+            </h2>
             <p className="text-base md:text-lg text-white/90">
               Hi, I’m a frontend developer passionate about creating clean,
               responsive, and user-focused web applications. I love turning
@@ -48,20 +52,22 @@ export default function About() {
               drive to keep learning, I aim to build products that are both
               functional and enjoyable to use.
             </p>
-
             <div className="flex gap-4 mt-4">
-              <Link
-                href="#contact"
-                className="bg-purple-600 text-white px-5 py-2 rounded-xl hover:bg-purple-700 transition"
-              >
-                Contact Me
+              <Link href="#contact">
+                <Button
+                  variant="default"
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
+                  Contact Me
+                </Button>
               </Link>
-              <a
-                href="/cv.pdf"
-                download
-                className="border border-purple-400 text-purple-200 px-5 py-2 rounded-xl hover:bg-purple-900 transition"
-              >
-                Download CV
+              <a href="/cv.pdf" download>
+                <Button
+                  variant="outline"
+                  className="border-purple-400 text-purple-500 hover:bg-purple-900 hover:text-purple-100"
+                >
+                  Download CV
+                </Button>
               </a>
             </div>
           </motion.div>
@@ -71,7 +77,7 @@ export default function About() {
             className="flex-1 flex justify-end"
             variants={fadeInRight}
           >
-            <div className="relative w-[300px] h-[300px] rounded-full p-1 border border-violet-600 shadow-xl hover:scale-105 transition-transform duration-300">
+            <div className="relative w-[280px] h-[280px] md:w-[300px] md:h-[300px] rounded-full p-1 border border-violet-600 shadow-xl hover:scale-105 transition-transform duration-300">
               <Image
                 src="/asset/img/img-1.jpg"
                 alt="About Me"
@@ -80,7 +86,7 @@ export default function About() {
               />
             </div>
           </motion.div>
-        </div>
+        </Card>
       </motion.div>
     </div>
   );

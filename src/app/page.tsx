@@ -6,6 +6,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import TechStackSection from "@/components/TechStack";
 import Timeline from "@/components/Timeline";
+import Ability from "@/components/Ability";
+// import Projects from "@/components/Projects";
 
 export default function Home() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -26,6 +28,8 @@ export default function Home() {
       <About />
       <TechStackSection />
       <Timeline />
+      <Ability />
+      {/* <Projects /> */}
     </div>
   );
 }
