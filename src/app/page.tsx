@@ -1,13 +1,13 @@
 "use client";
 
-import About from "@/components/About";
-import Landing from "@/components/Landing";
+import About from "@/sections/About";
+import Landing from "@/sections/Landing";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import TechStackSection from "@/components/TechStack";
-import Timeline from "@/components/Timeline";
-import Ability from "@/components/Ability";
-// import Projects from "@/components/Projects";
+import TechStackSection from "@/sections/TechStack";
+import Timeline from "@/sections/Timeline";
+import Ability from "@/sections/Ability";
+// import Projects from "@/sections/Projects";
 
 export default function Home() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });

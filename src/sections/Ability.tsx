@@ -3,44 +3,9 @@
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
-const abilities = [
-  {
-    title: "CMS Editor with WordPress",
-    description:
-      "Experienced in managing content, building layouts, and optimizing performance using WordPress CMS.",
-  },
-  {
-    title: "Frontend Development",
-    description:
-      "Proficient in building responsive, accessible, and visually appealing user interfaces using React and TailwindCSS.",
-  },
-  {
-    title: "Backend Integrations",
-    description:
-      "Capable of connecting frontend apps with REST APIs, handling authentication, and integrating third-party services.",
-  },
-];
-
-const createFloatVariant = (x: number, y: number, duration: number) => ({
-  animate: {
-    x: [0, x, -x, 0],
-    y: [0, -y, y, 0],
-    transition: {
-      duration,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  },
-});
-
-const FloatingShape = ({
-  className,
-  variant,
-}: {
-  className: string;
-  variant: any;
-}) => <motion.div className={className} variants={variant} animate="animate" />;
+import { abilities } from "@/data/abilities";
+import { FloatingShape } from "@/components/common/FloatingShape";
+import { createFloatVariant } from "@/lib/motion";
 
 const AbilityCard = ({
   title,

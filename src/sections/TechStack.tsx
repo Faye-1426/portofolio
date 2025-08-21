@@ -3,16 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-
-const techStack = [
-  { name: "React", icon: "/asset/tech/react.png" },
-  { name: "Next.js", icon: "/asset/tech/nextjs.png" },
-  { name: "Tailwind CSS", icon: "/asset/tech/tailwindcss.png" },
-  { name: "TypeScript", icon: "/asset/tech/typescript.png" },
-  { name: "JavaScript", icon: "/asset/tech/js.png" },
-  { name: "Vite", icon: "/asset/tech/vite.png" },
-  { name: "Wordpress", icon: "/asset/tech/wordpress.jpg" },
-];
+import { techStack } from "@/data/techStack";
 
 const duplicatedStack = [...techStack, ...techStack];
 

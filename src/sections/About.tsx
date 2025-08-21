@@ -5,25 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
-const containerVariant = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const fadeInLeft = {
-  hidden: { opacity: 0, x: -50 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const fadeInRight = {
-  hidden: { opacity: 0, x: 50 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+import { containerStagger, fadeInLeft, fadeInRight } from "@/lib/motion";
 
 export default function About() {
   return (
@@ -33,7 +15,7 @@ export default function About() {
     >
       <motion.div
         className="mx-auto px-6 md:px-12 lg:px-20"
-        variants={containerVariant}
+        variants={containerStagger}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
